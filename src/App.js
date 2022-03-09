@@ -25,9 +25,9 @@ function App() {
       <Switch>
         <UserLoginTemplate exact path="/login" Component={LoginCyberBugs} />
 
-        <HomeTemplate path="/home" exact Component={Home} />
         <HomeTemplate path="/" exact Component={Home} />
         <HomeTemplate path="*" component={PageNotFound} />
+        <HomeTemplate path="/home" exact Component={Home} />
       </Switch>
     </BrowserRouter>
   );
