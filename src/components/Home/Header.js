@@ -48,16 +48,6 @@ export default function Header() {
               Contact
             </NavLink>
           </li>
-          <li className="nav-item dropdown">
-            <NavLink
-              activeClassName="activeNavItem"
-              activeStyle={{ fontWeight: 'bold' }}
-              className="nav-link"
-              to="/login"
-            >
-              Login
-            </NavLink>
-          </li>
 
           <li className="nav-item dropdown">
             <a
@@ -68,21 +58,19 @@ export default function Header() {
               aria-haspopup="true"
               aria-expanded="false"
             >
-              BaiTap
+              Users
             </a>
             <div className="dropdown-menu" aria-labelledby="dropdownId">
-              <NavLink className="nav-link text-dark" to="/todolist">
-                Todolist
-              </NavLink>
-              <NavLink className="nav-link text-dark" to="/todolistrfc">
-                Todolistrfc
-              </NavLink>
-              <NavLink className="nav-link text-dark" to="/todolistredux">
-                TodolistRedux
-              </NavLink>
-              <NavLink className="nav-link text-dark" to="/todolistsaga">
-                TodolistSaga
-              </NavLink>
+              <li className="nav-item dropdown">
+                <NavLink
+                  activeClassName="activeNavItem"
+                  activeStyle={{ fontWeight: 'bold' }}
+                  className="nav-link text-dark"
+                  to="/login"
+                >
+                  Login
+                </NavLink>
+              </li>
             </div>
           </li>
         </ul>

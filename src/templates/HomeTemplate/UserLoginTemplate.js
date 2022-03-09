@@ -6,6 +6,7 @@ const { Header, Footer, Sider, Content } = Layout;
 
 export const UserLoginTemplate = (props) => {
   let { Component, ...restRoute } = props;
+
   const [{ width, height }, setSize] = useState({
     width: window.innerWidth,
     height: window.innerHeight,

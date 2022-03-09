@@ -1,18 +1,11 @@
 import Axios from 'axios';
-import {
-  call,
-  delay,
-  fork,
-  take,
-  takeEvery,
-  takeLatest,
-  put,
-} from 'redux-saga/effects';
+import { call, delay, select, takeLatest, put } from 'redux-saga/effects';
 import { cyberbugsService } from '../../services/CyberbugsService';
-import { USER_SIGNIN_API } from '../constants/CyberbugsConst';
+import { USER_SIGNIN_API, USLOGIN } from '../constants/CyberbugsConst';
 import { DISPLAY_LOADING, HIDE_LOADING } from '../constants/LoadingConst';
 import { TOKEN, USER_LOGIN } from '../../utils/constants/settingSystem';
 
+import { history } from './../../utils/history';
 //Quản lý các action saga
 
 function* signinSaga(action) {
@@ -33,6 +26,13 @@ function* signinSaga(action) {
     localStorage.setItem(USER_LOGIN, JSON.stringify(data.content));
 
     console.log(data);
+
+    yield put({
+      type: USLOGIN,
+      userLogin: data.content,
+    });
+
+    history.push('/home');
   } catch (err) {
     console.log(err.response.data);
   }
