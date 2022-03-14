@@ -8,7 +8,10 @@ import PageNotFound from './pages/PageNotFound/PageNotFound';
 import { HomeTemplate } from './templates/HomeTemplate/HomeTemplate';
 import { UserLoginTemplate } from './templates/HomeTemplate/UserLoginTemplate';
 import { ADD_HISTORY } from './redux/constants/HistoryConst';
+import { CyberbugsTemplate } from './templates/HomeTemplate/CyberbugsTemplate';
 
+import CreateProject from './pages/CyberBugs/CreateProject';
+import IndexCyberBugs from './components/Cyberbugs/IndexCyberbugs';
 function App() {
   const history = useHistory();
   const dispatch = useDispatch();
@@ -20,16 +23,21 @@ function App() {
   }, []);
 
   return (
-    <BrowserRouter>
+    <>
       <LoadingComponent />
       <Switch>
         <UserLoginTemplate exact path="/login" Component={LoginCyberBugs} />
-
-        <HomeTemplate path="/" exact Component={Home} />
-        <HomeTemplate path="*" component={PageNotFound} />
-        <HomeTemplate path="/home" exact Component={Home} />
+        <CyberbugsTemplate exact path="/cyberbugs" Component={IndexCyberBugs} />
+        <CyberbugsTemplate
+          exact
+          path="/createproject"
+          Component={CreateProject}
+        />
+        <HomeTemplate path="/" Component={Home} />
+        <HomeTemplate path="*" Component={PageNotFound} />
+        <HomeTemplate path="/home" Component={Home} />
       </Switch>
-    </BrowserRouter>
+    </>
   );
 }
 

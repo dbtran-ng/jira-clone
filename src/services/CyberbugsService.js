@@ -8,4 +8,10 @@ export const cyberbugsService = {
       data: userLogin,
     });
   },
+  getAllProjectCategory: (projectCategory) => {
+    return Axios({
+      url: `${DOMAIN_CYBERBUG}/ProjectCategory`,
+      method: 'GET',
+    });
+  },
 };
