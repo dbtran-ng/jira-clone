@@ -12,6 +12,7 @@ import { CyberbugsTemplate } from './templates/HomeTemplate/CyberbugsTemplate';
 
 import CreateProject from './pages/CyberBugs/CreateProject';
 import IndexCyberBugs from './components/Cyberbugs/IndexCyberbugs';
+import ProjectManagement from './pages/CyberBugs/ProjectManagement';
 function App() {
   const history = useHistory();
   const dispatch = useDispatch();
@@ -32,6 +33,11 @@ function App() {
           exact
           path="/createproject"
           Component={CreateProject}
+        />
+        <CyberbugsTemplate
+          exact
+          path="/projectmanagement"
+          Component={ProjectManagement}
         />
         <HomeTemplate path="/" Component={Home} />
         <HomeTemplate path="*" Component={PageNotFound} />

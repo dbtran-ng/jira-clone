@@ -30,6 +30,17 @@ export default function MenuCyberbugs() {
           <NavLink
             className="text-dark ml-1"
             activeStyle={{ color: 'blue' }}
+            to="/projectmanagement"
+            activeClassName="active font-weight-bold  text-primary"
+          >
+            Project Management
+          </NavLink>
+        </div>
+        <div>
+          <i className="fa fa-cog" />
+          <NavLink
+            className="text-dark ml-1"
+            activeStyle={{ color: 'blue' }}
             to="/createproject"
             activeClassName="active font-weight-bold  text-primary"
           >
