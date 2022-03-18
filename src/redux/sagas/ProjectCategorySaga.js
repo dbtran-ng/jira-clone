@@ -1,13 +1,13 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { cyberbugsService } from '../../services/CyberbugsService';
-import { STATUS_CODE } from '../../../util/constants/settingSystem';
+import { STATUS_CODE } from './../../utils/constants/settingSystem';
 import {
   GET_ALL_PROJECT_CATEGORY,
   GET_ALL_PROJECT_CATEGORY_SAGA,
-} from './CyberbugsConst';
+} from '../constants/CyberbugsConst';
 
 function* getAllProjectCategorySaga(action) {
-  console.log('actionSaga', action);
+  // console.log('actionSaga', action);
 
   try {
     //Gọi api lấy dữ liệu về
