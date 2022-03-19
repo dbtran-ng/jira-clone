@@ -13,6 +13,7 @@ import { CyberbugsTemplate } from './templates/HomeTemplate/CyberbugsTemplate';
 import CreateProject from './pages/CyberBugs/CreateProject';
 import IndexCyberBugs from './components/Cyberbugs/IndexCyberbugs';
 import ProjectManagement from './pages/CyberBugs/ProjectManagement';
+import DrawerCyberBugs from './HOC/DrawerCyberbugs';
 function App() {
   const history = useHistory();
   const dispatch = useDispatch();
@@ -26,6 +27,7 @@ function App() {
   return (
     <>
       <LoadingComponent />
+      <DrawerCyberBugs />
       <Switch>
         <UserLoginTemplate exact path="/login" Component={LoginCyberBugs} />
         <CyberbugsTemplate exact path="/cyberbugs" Component={IndexCyberBugs} />

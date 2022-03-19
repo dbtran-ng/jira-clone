@@ -3,7 +3,12 @@ import { Table, Tag, Space, Button } from 'antd';
 import ReactHtmlParser from 'html-react-parser';
 import { FormOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
-import { GET_PROJECT_SAGA } from './../../redux/constants/CyberbugsConst';
+import {
+  GET_PROJECT_SAGA,
+  OPEN_DRAWER,
+  OPEN_FORM_EDIT_PROJECT,
+} from './../../redux/constants/CyberbugsConst';
+import FormEditProject from '../../components/Cyberbugs/Forms/FormEditProject';
 export default function ProjectManagement(props) {
   // lay data tu reducer ve components
   const projectList = useSelector((state) => state.ProjectReducer.projectList);
@@ -128,7 +133,16 @@ export default function ProjectManagement(props) {
       render: (text, record, index) => {
         return (
           <div>
-            <button className="btn mr-2 btn-primary">
+            <button
+              className="btn mr-2 btn-primary"
+              onClick={() => {
+                const action = {
+                  type: OPEN_FORM_EDIT_PROJECT,
+                  componentContentDrawer: <FormEditProject />,
+                };
+                dispatch(action);
+              }}
+            >
               <FormOutlined style={{ fontSize: 17 }} />
             </button>
             <button className="btn btn-danger">

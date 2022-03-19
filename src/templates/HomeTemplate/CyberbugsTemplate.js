@@ -21,7 +21,6 @@ export const CyberbugsTemplate = (props) => {
               <SidebarCyberbugs />
               <MenuCyberbugs />
               <Component {...propsRoute} />
-              <ModalCyberBugs />
             </div>
           </>
         );

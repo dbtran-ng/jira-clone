@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function SidebarCyberbugs() {
+export default function ModalCyberbugs() {
   return (
     <div className="sideBar">
       <div className="sideBar-top">
