@@ -1,22 +1,42 @@
 import { Editor } from '@tinymce/tinymce-react';
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { SET_SUBMIT_EDIT_PROJECT } from './../../../redux/constants/CyberbugsConst';
+import { connect, useSelector, useDispatch } from 'react-redux';
+import {
+  SET_SUBMIT_EDIT_PROJECT,
+  GET_ALL_PROJECT_CATEGORY_SAGA,
+  UPDATE_PROJECT_SAGA,
+} from './../../../redux/constants/CyberbugsConst';
+import { withFormik } from 'formik';
+import * as Yup from 'yup';
 
-export default function FormEditProject(props) {
+function FormEditProject(props) {
+  const arrProjectCategory = useSelector(
+    (state) => state.ProjectCategoryReducer.arrProjectCategory
+  );
   const dispatch = useDispatch();
   const submitForm = (e) => {
     e.preventDefault();
     alert('submit edit');
   };
 
+  const {
+    values,
+    touched,
+    errors,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    setFieldValue,
+  } = props;
+
   //componentdidmount
   useEffect(() => {
-    dispatch({ type: SET_SUBMIT_EDIT_PROJECT, submitFunction: submitForm });
+    dispatch({ type: GET_ALL_PROJECT_CATEGORY_SAGA });
+    dispatch({ type: SET_SUBMIT_EDIT_PROJECT, submitFunction: handleSubmit });
   }, []);
 
   const handleEditorChange = (content, editor) => {
-    // setFieldValue('description', content)
+    setFieldValue('description', content);
   };
 
   return (
@@ -25,19 +45,42 @@ export default function FormEditProject(props) {
         <div className="col-4">
           <div className="form-group">
             <p className="font-weight-bold">Project id</p>
-            <input disabled className="form-control" name="id" />
+            <input
+              value={values.id}
+              disabled
+              className="form-control"
+              name="id"
+            />
           </div>
         </div>
         <div className="col-4">
           <div className="form-group">
             <p className="font-weight-bold">Project name</p>
-            <input className="form-control" name="projectName" />
+            <input
+              value={values.projectName}
+              className="form-control"
+              name="projectName"
+              onChange={handleChange}
+            />
           </div>
         </div>
         <div className="col-4">
           <div className="form-group">
             <p className="font-weight-bold">Project Category</p>
-            <input className="form-control" name="projectName" />
+            <select
+              className="form-control"
+              name="categoryId"
+              value={values.categoryId}
+              onChange={handleChange}
+            >
+              {arrProjectCategory?.map((item, index) => {
+                return (
+                  <option value={item.id} key={index}>
+                    {item.projectCategoryName}
+                  </option>
+                );
+              })}
+            </select>
           </div>
         </div>
         <div className="col-12">
@@ -45,6 +88,8 @@ export default function FormEditProject(props) {
             <p className="font-weight-bold">Description</p>
             <Editor
               name="description123"
+              initialValue={values.description}
+              value={values.description}
               init={{
                 selector: 'textarea#myTextArea',
 
@@ -68,3 +113,33 @@ export default function FormEditProject(props) {
     </form>
   );
 }
+const editProjectForm = withFormik({
+  enableReinitialize: true,
+  mapPropsToValues: (props) => {
+    const { projectEdit } = props;
+    return {
+      id: projectEdit?.id,
+      projectName: projectEdit?.projectName,
+      description: projectEdit?.description,
+      // creator: projectEdit?.creator,
+      categoryId: projectEdit?.categoryId,
+    };
+  },
+  validationSchema: Yup.object().shape({}),
+  handleSubmit: (values, { props, setSubmitting }) => {
+    const action = {
+      type: UPDATE_PROJECT_SAGA,
+      projectUpdate: values,
+    };
+    props.dispatch(action);
+  },
+  displayName: 'EditProjectForm',
+})(FormEditProject);
+
+const mapStateToProps = (state) => {
+  return {
+    projectEdit: state.ProjectFunctionReducer.projectEdit,
+  };
+};
+
+export default connect(mapStateToProps)(editProjectForm);

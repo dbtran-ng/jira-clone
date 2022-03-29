@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Tag, Space, Button } from 'antd';
+import {
+  Table,
+  Tag,
+  Space,
+  Button,
+  Avatar,
+  Popconfirm,
+  message,
+  Popover,
+  AutoComplete,
+} from 'antd';
 import ReactHtmlParser from 'html-react-parser';
 import { FormOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
@@ -7,11 +17,17 @@ import {
   GET_PROJECT_SAGA,
   OPEN_DRAWER,
   OPEN_FORM_EDIT_PROJECT,
+  EDIT_PROJECT,
+  DELETE_PROJECT,
+  DELETE_PROJECT_SAGA,
+  GET_USER_API,
 } from './../../redux/constants/CyberbugsConst';
 import FormEditProject from '../../components/Cyberbugs/Forms/FormEditProject';
+
 export default function ProjectManagement(props) {
   // lay data tu reducer ve components
   const projectList = useSelector((state) => state.ProjectReducer.projectList);
+  const { userSearch } = useSelector((state) => state.UserLoginReducer);
 
   // su dung useDispatch de goi actions
   const dispatch = useDispatch();
@@ -127,6 +143,49 @@ export default function ProjectManagement(props) {
       sortDirections: ['descend'],
     },
     {
+      title: 'members',
+      key: 'members',
+      render: (text, record, index) => {
+        return (
+          <div>
+            {record.members?.slice(0, 3).map((member, index) => {
+              return <Avatar key={index} src={member.avatar} />;
+            })}
+
+            {record.members?.length > 3 ? <Avatar>...</Avatar> : ''}
+
+            <Popover
+              placement="rightTop"
+              title={'Add user'}
+              content={() => {
+                return (
+                  <AutoComplete
+                    style={{ width: '100%' }}
+                    options={userSearch?.map((user, index) => {
+                      return { label: user.name, value: user.userId };
+                    })}
+                    onSelect={(value, option) => {
+                      console.log('userId', value);
+                      console.log('option', option);
+                    }}
+                    onSearch={(value) => {
+                      dispatch({
+                        type: GET_USER_API,
+                        keyword: value,
+                      });
+                    }}
+                  />
+                );
+              }}
+              trigger="click"
+            >
+              <Button style={{ borderRadius: '50%' }}>+</Button>
+            </Popover>
+          </div>
+        );
+      },
+    },
+    {
       title: 'Action',
       dataIndex: '',
       key: 'x',
@@ -141,13 +200,33 @@ export default function ProjectManagement(props) {
                   componentContentDrawer: <FormEditProject />,
                 };
                 dispatch(action);
+                // dispatch data current to reducer
+                const actionEditProject = {
+                  type: EDIT_PROJECT,
+                  projectEditModel: record,
+                };
+                dispatch(actionEditProject);
               }}
             >
               <FormOutlined style={{ fontSize: 17 }} />
             </button>
-            <button className="btn btn-danger">
-              <DeleteOutlined style={{ fontSize: 17 }} />
-            </button>
+            <Popconfirm
+              title="Are you sure to delete this project?"
+              onConfirm={() => {
+                const actionDeleteProject = {
+                  type: DELETE_PROJECT_SAGA,
+                  projectId: record.id,
+                };
+                dispatch(actionDeleteProject);
+              }}
+              okText="Yes"
+              cancelText="No"
+            >
+              <button className="btn btn-danger">
+                <DeleteOutlined style={{ fontSize: 17 }} />
+              </button>
+            </Popconfirm>
+            ,
           </div>
         );
       },

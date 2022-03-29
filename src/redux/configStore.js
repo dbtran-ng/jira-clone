@@ -10,6 +10,7 @@ import { UserLoginReducer } from './reducers/UserLoginReducer';
 import { ProjectCategoryReducer } from './reducers/ProjectCategoryReducer';
 import { ProjectReducer } from './reducers/ProjectReducer';
 import { DrawerReducer } from './reducers/DrawerReducer';
+import { ProjectFunctionReducer } from './reducers/ProjectFunctionReducer';
 const middleWareSaga = createMiddleWareSaga();
 
 const rootReducer = combineReducers({
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   ProjectCategoryReducer,
   ProjectReducer,
   DrawerReducer,
+  ProjectFunctionReducer,
 });
 
 const store = createStore(

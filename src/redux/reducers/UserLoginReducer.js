@@ -1,4 +1,4 @@
-import { USLOGIN } from '../constants/CyberbugsConst';
+import { GET_USER_SEARCH, USLOGIN } from '../constants/CyberbugsConst';
 
 const { USER_LOGIN } = require('./../../utils/constants/settingSystem');
 
@@ -10,6 +10,7 @@ if (localStorage.getItem(USER_LOGIN)) {
 
 const stateDefault = {
   userLogin: usLogin,
+  userSearch: [],
 };
 
 export const UserLoginReducer = (state = stateDefault, action) => {
@@ -18,7 +19,10 @@ export const UserLoginReducer = (state = stateDefault, action) => {
       state.userLogin = action.userLogin;
       return { ...state };
     }
-
+    case GET_USER_SEARCH: {
+      state.userSearch = action.userSearchList;
+      return { ...state };
+    }
     default:
       return { ...state };
   }

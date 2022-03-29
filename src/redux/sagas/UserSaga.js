@@ -1,11 +1,19 @@
 import Axios from 'axios';
 import { call, delay, select, takeLatest, put } from 'redux-saga/effects';
 import { cyberbugsService } from '../../services/CyberbugsService';
-import { USER_SIGNIN_API, USLOGIN } from '../constants/CyberbugsConst';
+import {
+  GET_USER_API,
+  GET_USER_SEARCH,
+  USER_SIGNIN_API,
+  USLOGIN,
+} from '../constants/CyberbugsConst';
 import { DISPLAY_LOADING, HIDE_LOADING } from '../constants/LoadingConst';
 import { TOKEN, USER_LOGIN } from '../../utils/constants/settingSystem';
 
 import { history } from './../../utils/history';
+
+import { userService } from './../../services/UserService';
+
 //Quản lý các action saga
 
 function* signinSaga(action) {
@@ -44,4 +52,28 @@ function* signinSaga(action) {
 
 export function* theoDoiSignin() {
   yield takeLatest(USER_SIGNIN_API, signinSaga);
+}
+
+function* getUserSaga(action) {
+  //Gọi api
+  try {
+    const { data, status } = yield call(() =>
+      userService.getUser(action.keyword)
+    );
+
+    yield put({
+      type: GET_USER_SEARCH,
+      userSearchList: data.content,
+    });
+  } catch (err) {
+    console.log(err.response.data);
+  }
+
+  yield put({
+    type: HIDE_LOADING,
+  });
+}
+
+export function* theoDoiGetUserSaga() {
+  yield takeLatest(GET_USER_API, getUserSaga);
 }
