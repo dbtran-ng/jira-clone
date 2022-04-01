@@ -6,6 +6,8 @@ import {
   GET_PROJECT_SAGA,
   UPDATE_PROJECT_SAGA,
   DELETE_PROJECT_SAGA,
+  GET_PROJECT_DETAILS_SAGA,
+  PUT_PROJECT_DETAILS,
   CLOSE_DRAWER,
 } from '../constants/CyberbugsConst';
 import { DISPLAY_LOADING, HIDE_LOADING } from '../constants/LoadingConst';
@@ -13,7 +15,6 @@ import { history } from '../../utils/history';
 import { projectService } from '../../services/ProjectService';
 import { notificationFunction } from '../../utils/Notification/NotificationCyberbugs';
 function* createProjectSaga(action) {
-  console.log('actionCreateProject', action);
   //HIỂN THỊ LOADING
   yield put({
     type: DISPLAY_LOADING,
@@ -106,7 +107,6 @@ export function* theodoiUpdateProjectSaga() {
 }
 
 function* deleteProjectSaga(action) {
-  console.log(action);
   yield put({
     type: DISPLAY_LOADING,
   });
@@ -135,4 +135,31 @@ function* deleteProjectSaga(action) {
 
 export function* theodoiDeleteProjectSaga() {
   yield takeLatest(DELETE_PROJECT_SAGA, deleteProjectSaga);
+}
+
+function* getProjectDetailsSaga(action) {
+  yield put({
+    type: DISPLAY_LOADING,
+  });
+  yield delay(500);
+  try {
+    const { data, status } = yield call(() =>
+      projectService.getProjectDetails(action.projectId)
+    );
+
+    yield put({
+      type: PUT_PROJECT_DETAILS,
+      projectDetails: data.content,
+    });
+  } catch (err) {
+    console.log('404', err);
+    history.push('/projectmanagement');
+  }
+  yield put({
+    type: HIDE_LOADING,
+  });
+}
+
+export function* theodoiGetProjectDetailsSaga() {
+  yield takeLatest(GET_PROJECT_DETAILS_SAGA, getProjectDetailsSaga);
 }

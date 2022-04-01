@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { NavLink } from 'react-router-dom';
 import {
   Table,
   Tag,
@@ -11,16 +12,21 @@ import {
   AutoComplete,
 } from 'antd';
 import ReactHtmlParser from 'html-react-parser';
-import { FormOutlined, DeleteOutlined } from '@ant-design/icons';
+import {
+  FormOutlined,
+  DeleteOutlined,
+  CloseSquareOutlined,
+} from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   GET_PROJECT_SAGA,
   OPEN_DRAWER,
   OPEN_FORM_EDIT_PROJECT,
   EDIT_PROJECT,
-  DELETE_PROJECT,
   DELETE_PROJECT_SAGA,
   GET_USER_API,
+  ADD_USER_PROJECT_SAGA,
+  REMOVE_USER_PROJECT_SAGA,
 } from './../../redux/constants/CyberbugsConst';
 import FormEditProject from '../../components/Cyberbugs/Forms/FormEditProject';
 
@@ -28,7 +34,8 @@ export default function ProjectManagement(props) {
   // lay data tu reducer ve components
   const projectList = useSelector((state) => state.ProjectReducer.projectList);
   const { userSearch } = useSelector((state) => state.UserLoginReducer);
-
+  const [value, setValue] = useState('');
+  const searchRef = useRef(null);
   // su dung useDispatch de goi actions
   const dispatch = useDispatch();
 
@@ -89,6 +96,9 @@ export default function ProjectManagement(props) {
       title: 'projectName',
       dataIndex: 'projectName',
       key: 'projectName',
+      render: (text, record, index) => {
+        return <NavLink to={`/projectdetails/${record.id}`}>{text}</NavLink>;
+      },
       sorter: (item2, item1) => {
         if (
           item2.projectName?.trim().toLowerCase() <
@@ -149,7 +159,62 @@ export default function ProjectManagement(props) {
         return (
           <div>
             {record.members?.slice(0, 3).map((member, index) => {
-              return <Avatar key={index} src={member.avatar} />;
+              return (
+                <Popover
+                  placement="top"
+                  title={'Members'}
+                  content={() => {
+                    return (
+                      <table className="table">
+                        <thead>
+                          <tr>
+                            <th>ID</th>
+                            <th>Avatar</th>
+                            <th>Name</th>
+                            <th></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {record.members?.map((item, index) => {
+                            return (
+                              <tr key={index}>
+                                <td>{item.userId}</td>
+                                <td>
+                                  <img
+                                    src={item.avatar}
+                                    width="30"
+                                    height="30"
+                                    style={{ borderRadius: '15px' }}
+                                  />
+                                </td>
+                                <td>{item.name}</td>
+                                <td>
+                                  <button
+                                    className="btn btn-danger"
+                                    onClick={() => {
+                                      dispatch({
+                                        type: REMOVE_USER_PROJECT_SAGA,
+                                        userProject: {
+                                          userId: item.userId,
+                                          projectId: record.id,
+                                        },
+                                      });
+                                    }}
+                                  >
+                                    <CloseSquareOutlined />
+                                  </button>
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    );
+                  }}
+                >
+                  <Avatar key={index} src={member.avatar} />
+                </Popover>
+              );
             })}
 
             {record.members?.length > 3 ? <Avatar>...</Avatar> : ''}
@@ -162,17 +227,36 @@ export default function ProjectManagement(props) {
                   <AutoComplete
                     style={{ width: '100%' }}
                     options={userSearch?.map((user, index) => {
-                      return { label: user.name, value: user.userId };
+                      return {
+                        label: user.name,
+                        value: user.userId.toString(),
+                      };
                     })}
-                    onSelect={(value, option) => {
-                      console.log('userId', value);
-                      console.log('option', option);
+                    value={value}
+                    onChange={(text) => {
+                      setValue(text);
+                    }}
+                    onSelect={(valueSelect, option) => {
+                      setValue(option.label);
+
+                      dispatch({
+                        type: ADD_USER_PROJECT_SAGA,
+                        userProject: {
+                          projectId: record.id,
+                          userId: valueSelect,
+                        },
+                      });
                     }}
                     onSearch={(value) => {
-                      dispatch({
-                        type: GET_USER_API,
-                        keyword: value,
-                      });
+                      if (searchRef.current) {
+                        clearTimeout(searchRef.current);
+                      }
+                      searchRef.current = setTimeout(() => {
+                        dispatch({
+                          type: GET_USER_API,
+                          keyword: value,
+                        });
+                      }, 300);
                     }}
                   />
                 );
@@ -197,6 +281,7 @@ export default function ProjectManagement(props) {
               onClick={() => {
                 const action = {
                   type: OPEN_FORM_EDIT_PROJECT,
+                  title: 'Edit Project',
                   componentContentDrawer: <FormEditProject />,
                 };
                 dispatch(action);

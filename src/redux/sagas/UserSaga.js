@@ -6,6 +6,9 @@ import {
   GET_USER_SEARCH,
   USER_SIGNIN_API,
   USLOGIN,
+  ADD_USER_PROJECT_SAGA,
+  GET_PROJECT_SAGA,
+  REMOVE_USER_PROJECT_SAGA,
 } from '../constants/CyberbugsConst';
 import { DISPLAY_LOADING, HIDE_LOADING } from '../constants/LoadingConst';
 import { TOKEN, USER_LOGIN } from '../../utils/constants/settingSystem';
@@ -76,4 +79,48 @@ function* getUserSaga(action) {
 
 export function* theoDoiGetUserSaga() {
   yield takeLatest(GET_USER_API, getUserSaga);
+}
+
+function* addUserProjectSaga(action) {
+  //Gọi api
+  try {
+    const { data, status } = yield call(() =>
+      userService.assignUserProject(action.userProject)
+    );
+    yield put({
+      type: GET_PROJECT_SAGA,
+    });
+  } catch (err) {
+    console.log(err.response.data);
+  }
+
+  yield put({
+    type: HIDE_LOADING,
+  });
+}
+
+export function* theoDoiAddUserProjectSaga() {
+  yield takeLatest(ADD_USER_PROJECT_SAGA, addUserProjectSaga);
+}
+
+function* removeUserProjectSaga(action) {
+  //Gọi api
+  try {
+    const { data, status } = yield call(() =>
+      userService.deleteUserFromProject(action.userProject)
+    );
+    yield put({
+      type: GET_PROJECT_SAGA,
+    });
+  } catch (err) {
+    console.log(err.response.data);
+  }
+
+  yield put({
+    type: HIDE_LOADING,
+  });
+}
+
+export function* theoDoiRemoveUserProjectSaga() {
+  yield takeLatest(REMOVE_USER_PROJECT_SAGA, removeUserProjectSaga);
 }

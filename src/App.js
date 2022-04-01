@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Route, Switch, useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import LoadingComponent from './components/Global/Loading';
-import LoginCyberBugs from './pages/CyberBugs/LoginCyberBugs.js';
+import LoginCyberbugs from './pages/CyberBugs/LoginCyberBugs.js';
 import Home from './pages/Home/Home';
 import PageNotFound from './pages/PageNotFound/PageNotFound';
 import { HomeTemplate } from './templates/HomeTemplate/HomeTemplate';
@@ -11,7 +11,7 @@ import { ADD_HISTORY } from './redux/constants/HistoryConst';
 import { CyberbugsTemplate } from './templates/HomeTemplate/CyberbugsTemplate';
 
 import CreateProject from './pages/CyberBugs/CreateProject';
-import IndexCyberBugs from './components/Cyberbugs/IndexCyberbugs';
+import IndexCyberbugs from './components/Cyberbugs/IndexCyberbugs';
 import ProjectManagement from './pages/CyberBugs/ProjectManagement';
 import DrawerCyberBugs from './HOC/DrawerCyberbugs';
 function App() {
@@ -29,8 +29,8 @@ function App() {
       <LoadingComponent />
       <DrawerCyberBugs />
       <Switch>
-        <UserLoginTemplate exact path="/login" Component={LoginCyberBugs} />
-        <CyberbugsTemplate exact path="/cyberbugs" Component={IndexCyberBugs} />
+        <UserLoginTemplate exact path="/login" Component={LoginCyberbugs} />
+        <CyberbugsTemplate exact path="/cyberbugs" Component={IndexCyberbugs} />
         <CyberbugsTemplate
           exact
           path="/createproject"
@@ -41,9 +41,14 @@ function App() {
           path="/projectmanagement"
           Component={ProjectManagement}
         />
-        <HomeTemplate path="/" Component={Home} />
-        <HomeTemplate path="*" Component={PageNotFound} />
-        <HomeTemplate path="/home" Component={Home} />
+        <CyberbugsTemplate
+          exact
+          path="/projectdetails/:projectId"
+          Component={IndexCyberbugs}
+        />
+        <CyberbugsTemplate path="/" Component={ProjectManagement} />
+        <CyberbugsTemplate path="*" Component={PageNotFound} />
+        <CyberbugsTemplate path="/home" Component={ProjectManagement} />
       </Switch>
     </>
   );

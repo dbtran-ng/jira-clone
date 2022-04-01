@@ -7,6 +7,8 @@ export function* rootSaga() {
     // from UserSaga
     Cyberbugs.theoDoiSignin(),
     Cyberbugs.theoDoiGetUserSaga(),
+    Cyberbugs.theoDoiAddUserProjectSaga(),
+    Cyberbugs.theoDoiRemoveUserProjectSaga(),
     // from ProjectCategorySaga
     ProjectCategorySaga.theoDoigetAllProjectCategory(),
     // from ProjectSaga
@@ -14,5 +16,6 @@ export function* rootSaga() {
     ProjectSaga.theoDoiGetListProjectSaga(),
     ProjectSaga.theodoiUpdateProjectSaga(),
     ProjectSaga.theodoiDeleteProjectSaga(),
+    ProjectSaga.theodoiGetProjectDetailsSaga(),
   ]);
 }
