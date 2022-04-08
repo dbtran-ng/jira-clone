@@ -1,5 +1,5 @@
 import { applyMiddleware, combineReducers, createStore } from 'redux';
-import LoadingReducer from './reducers/LoadingReducer';
+import { LoadingReducer } from './reducers/LoadingReducer';
 import reduxThunk from 'redux-thunk';
 
 //middleware saga
@@ -11,6 +11,9 @@ import { ProjectCategoryReducer } from './reducers/ProjectCategoryReducer';
 import { ProjectReducer } from './reducers/ProjectReducer';
 import { DrawerReducer } from './reducers/DrawerReducer';
 import { ProjectFunctionReducer } from './reducers/ProjectFunctionReducer';
+import { TaskTypeReducer } from './reducers/TaskTypeReducer';
+import { PriorityReducer } from './reducers/PriorityReducer';
+import { StatusReducer } from './reducers/StatusReducer';
 const middleWareSaga = createMiddleWareSaga();
 
 const rootReducer = combineReducers({
@@ -21,6 +24,9 @@ const rootReducer = combineReducers({
   ProjectReducer,
   DrawerReducer,
   ProjectFunctionReducer,
+  TaskTypeReducer,
+  PriorityReducer,
+  StatusReducer,
 });
 
 const store = createStore(

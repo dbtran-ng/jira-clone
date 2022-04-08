@@ -88,12 +88,11 @@ function FormEditProject(props) {
             <p className="font-weight-bold">Description</p>
             <Editor
               name="description123"
-              initialValue={values.description}
               value={values.description}
               init={{
                 selector: 'textarea#myTextArea',
-
                 height: 500,
+
                 menubar: false,
                 plugins: [
                   'advlist autolink lists link image charmap print preview anchor',
@@ -102,8 +101,8 @@ function FormEditProject(props) {
                 ],
                 toolbar:
                   'undo redo | formatselect | bold italic backcolor | \
-        alignleft aligncenter alignright alignjustify | \
-        bullist numlist outdent indent | removeformat | help',
+alignleft aligncenter alignright alignjustify | \
+bullist numlist outdent indent | removeformat | help',
               }}
               onEditorChange={handleEditorChange}
             />
@@ -117,14 +116,15 @@ const editProjectForm = withFormik({
   enableReinitialize: true,
   mapPropsToValues: (props) => {
     const { projectEdit } = props;
+
     return {
       id: projectEdit?.id,
-      projectName: projectEdit?.projectName,
-      description: projectEdit?.description,
-      // creator: projectEdit?.creator,
-      categoryId: projectEdit?.categoryId,
+      projectName: projectEdit.projectName,
+      description: projectEdit.description,
+      categoryId: projectEdit.categoryId,
     };
   },
+  validationSchema: Yup.object().shape({}),
   validationSchema: Yup.object().shape({}),
   handleSubmit: (values, { props, setSubmitting }) => {
     const action = {

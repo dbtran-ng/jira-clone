@@ -6,9 +6,11 @@ import {
   GET_PROJECT_SAGA,
   UPDATE_PROJECT_SAGA,
   DELETE_PROJECT_SAGA,
+  GET_ALL_PROJECTS_SAGA,
   GET_PROJECT_DETAILS_SAGA,
   PUT_PROJECT_DETAILS,
   CLOSE_DRAWER,
+  GET_ALL_PROJECT,
 } from '../constants/CyberbugsConst';
 import { DISPLAY_LOADING, HIDE_LOADING } from '../constants/LoadingConst';
 import { history } from '../../utils/history';
@@ -162,4 +164,29 @@ function* getProjectDetailsSaga(action) {
 
 export function* theodoiGetProjectDetailsSaga() {
   yield takeLatest(GET_PROJECT_DETAILS_SAGA, getProjectDetailsSaga);
+}
+
+function* getAllProjectsSaga(action) {
+  yield put({
+    type: DISPLAY_LOADING,
+  });
+  yield delay(500);
+  try {
+    const { data, status } = yield call(() => projectService.getAllProject());
+
+    yield put({
+      type: GET_ALL_PROJECT,
+      projectDetails: data.content,
+    });
+  } catch (err) {
+    console.log('404', err);
+    history.push('/projectmanagement');
+  }
+  yield put({
+    type: HIDE_LOADING,
+  });
+}
+
+export function* theodoiGetAllProjectsSaga() {
+  yield takeLatest(GET_ALL_PROJECTS_SAGA, getAllProjectsSaga);
 }

@@ -1,4 +1,3 @@
-import Axios from 'axios';
 import { call, delay, select, takeLatest, put } from 'redux-saga/effects';
 import { cyberbugsService } from '../../services/CyberbugsService';
 import {
@@ -9,10 +8,15 @@ import {
   ADD_USER_PROJECT_SAGA,
   GET_PROJECT_SAGA,
   REMOVE_USER_PROJECT_SAGA,
+  GET_USER_BY_PROJECT_ID,
+  GET_USER_BY_PROJECT_ID_SAGA,
 } from '../constants/CyberbugsConst';
 import { DISPLAY_LOADING, HIDE_LOADING } from '../constants/LoadingConst';
-import { TOKEN, USER_LOGIN } from '../../utils/constants/settingSystem';
-
+import {
+  STATUS_CODE,
+  TOKEN,
+  USER_LOGIN,
+} from '../../utils/constants/settingSystem';
 import { history } from './../../utils/history';
 
 import { userService } from './../../services/UserService';
@@ -35,8 +39,6 @@ function* signinSaga(action) {
     //Lưu vào localstorage khi đăng nhập thành công
     localStorage.setItem(TOKEN, data.content.accessToken);
     localStorage.setItem(USER_LOGIN, JSON.stringify(data.content));
-
-    console.log(data);
 
     yield put({
       type: USLOGIN,
@@ -123,4 +125,36 @@ function* removeUserProjectSaga(action) {
 
 export function* theoDoiRemoveUserProjectSaga() {
   yield takeLatest(REMOVE_USER_PROJECT_SAGA, removeUserProjectSaga);
+}
+
+function* getUserByProjectIdSaga(action) {
+  const { idProject } = action;
+  console.log('action', idProject);
+
+  try {
+    const { data, status } = yield call(() =>
+      userService.getUserByProjectId(idProject)
+    );
+    console.log('checkdata', data);
+
+    if (status === STATUS_CODE.SUCCESS) {
+      yield put({
+        type: GET_USER_BY_PROJECT_ID,
+        arrUser: data.content,
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    console.log(err.response?.data);
+    if (err.response?.data.statusCode === STATUS_CODE.NOT_FOUND) {
+      yield put({
+        type: GET_USER_BY_PROJECT_ID,
+        arrUser: [],
+      });
+    }
+  }
+}
+
+export function* theoDoiGetUserByProjectIdSaga() {
+  yield takeLatest(GET_USER_BY_PROJECT_ID_SAGA, getUserByProjectIdSaga);
 }

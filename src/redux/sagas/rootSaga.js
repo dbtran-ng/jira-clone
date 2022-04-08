@@ -1,14 +1,20 @@
 import { all } from 'redux-saga/effects';
-import * as Cyberbugs from './UserSaga';
+import * as UserSaga from './UserSaga';
 import * as ProjectCategorySaga from './ProjectCategorySaga';
 import * as ProjectSaga from './ProjectSaga';
+import * as TaskTypeSaga from './TaskTypeSaga';
+import * as TaskSaga from './TaskSaga';
+import * as PrioritySaga from './PrioritySaga';
+import * as StatusSaga from './StatusSaga';
+import { getAllTaskTypesSaga } from './TaskTypeSaga';
 export function* rootSaga() {
   yield all([
     // from UserSaga
-    Cyberbugs.theoDoiSignin(),
-    Cyberbugs.theoDoiGetUserSaga(),
-    Cyberbugs.theoDoiAddUserProjectSaga(),
-    Cyberbugs.theoDoiRemoveUserProjectSaga(),
+    UserSaga.theoDoiSignin(),
+    UserSaga.theoDoiGetUserSaga(),
+    UserSaga.theoDoiAddUserProjectSaga(),
+    UserSaga.theoDoiRemoveUserProjectSaga(),
+    UserSaga.theoDoiGetUserByProjectIdSaga(),
     // from ProjectCategorySaga
     ProjectCategorySaga.theoDoigetAllProjectCategory(),
     // from ProjectSaga
@@ -17,5 +23,10 @@ export function* rootSaga() {
     ProjectSaga.theodoiUpdateProjectSaga(),
     ProjectSaga.theodoiDeleteProjectSaga(),
     ProjectSaga.theodoiGetProjectDetailsSaga(),
+    ProjectSaga.theodoiGetAllProjectsSaga(),
+    TaskTypeSaga.getAllTaskTypesSaga(),
+    PrioritySaga.getAllPrioritiesSaga(),
+    StatusSaga.getAllStatusSaga(),
+    TaskSaga.theoDoiCreateTaskSaga(),
   ]);
 }

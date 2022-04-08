@@ -5,6 +5,7 @@ import {
   OPEN_FORM_EDIT_PROJECT,
   SET_SUBMIT_EDIT_PROJECT,
   OPEN_FORM_CREATE_TASK,
+  SET_SUBMIT_CREATE_TASK,
 } from '../constants/CyberbugsConst';
 
 const initialState = {
@@ -28,6 +29,9 @@ export const DrawerReducer = (state = initialState, action) => {
       state.title = action.title;
       return { ...state };
     case SET_SUBMIT_EDIT_PROJECT:
+      state.callBackSubmit = action.submitFunction;
+      return { ...state };
+    case SET_SUBMIT_CREATE_TASK:
       state.callBackSubmit = action.submitFunction;
       return { ...state };
     case OPEN_FORM_CREATE_TASK:

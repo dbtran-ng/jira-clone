@@ -158,9 +158,10 @@ export default function ProjectManagement(props) {
       render: (text, record, index) => {
         return (
           <div>
-            {record.members?.slice(0, 3).map((member, index) => {
+            {record.members?.slice(0, 3).map((member, i) => {
               return (
                 <Popover
+                  key={i}
                   placement="top"
                   title={'Members'}
                   content={() => {
@@ -311,7 +312,6 @@ export default function ProjectManagement(props) {
                 <DeleteOutlined style={{ fontSize: 17 }} />
               </button>
             </Popconfirm>
-            ,
           </div>
         );
       },

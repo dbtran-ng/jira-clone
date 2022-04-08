@@ -1,4 +1,8 @@
-import { GET_USER_SEARCH, USLOGIN } from '../constants/CyberbugsConst';
+import {
+  GET_USER_SEARCH,
+  USLOGIN,
+  GET_USER_BY_PROJECT_ID,
+} from '../constants/CyberbugsConst';
 
 const { USER_LOGIN } = require('./../../utils/constants/settingSystem');
 
@@ -11,6 +15,7 @@ if (localStorage.getItem(USER_LOGIN)) {
 const stateDefault = {
   userLogin: usLogin,
   userSearch: [],
+  arrUser: [], //Array user cho thẻ select create task
 };
 
 export const UserLoginReducer = (state = stateDefault, action) => {
@@ -22,6 +27,9 @@ export const UserLoginReducer = (state = stateDefault, action) => {
     case GET_USER_SEARCH: {
       state.userSearch = action.userSearchList;
       return { ...state };
+    }
+    case GET_USER_BY_PROJECT_ID: {
+      return { ...state, arrUser: action.arrUser };
     }
     default:
       return { ...state };
