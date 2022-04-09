@@ -10,7 +10,8 @@ import {
   GET_PROJECT_DETAILS_SAGA,
   PUT_PROJECT_DETAILS,
   CLOSE_DRAWER,
-  GET_ALL_PROJECT,
+  GET_ALL_PROJECTS,
+  GET_USER_BY_PROJECT_ID_SAGA,
 } from '../constants/CyberbugsConst';
 import { DISPLAY_LOADING, HIDE_LOADING } from '../constants/LoadingConst';
 import { history } from '../../utils/history';
@@ -30,6 +31,8 @@ function* createProjectSaga(action) {
     //Gọi api thành công thì dispatch lên reducer thông qua put
     if (status === STATUS_CODE.SUCCESS) {
       history.push('./projectmanagement');
+
+      history.go(0);
     }
   } catch (err) {
     console.log(err);
@@ -45,17 +48,11 @@ export function* theoDoiCreateProjectSaga() {
 }
 
 function* getListProjectSaga(action) {
-  //HIỂN THỊ LOADING
-  // yield put({
-  //   type: DISPLAY_LOADING,
-  // });
-
   try {
-    //Gọi api lấy dữ liệu về
     const { data, status } = yield call(() =>
       cyberbugsService.getListProject()
     );
-    //Gọi api thành công thì dispatch lên reducer thông qua put
+
     if (status === STATUS_CODE.SUCCESS) {
       yield put({
         type: GET_PROJECT_SAGA,
@@ -175,8 +172,12 @@ function* getAllProjectsSaga(action) {
     const { data, status } = yield call(() => projectService.getAllProject());
 
     yield put({
-      type: GET_ALL_PROJECT,
+      type: GET_ALL_PROJECTS,
       projectDetails: data.content,
+    });
+    yield put({
+      type: GET_USER_BY_PROJECT_ID_SAGA,
+      idProject: data.content[0].id,
     });
   } catch (err) {
     console.log('404', err);

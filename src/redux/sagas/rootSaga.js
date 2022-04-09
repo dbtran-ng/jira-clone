@@ -6,7 +6,6 @@ import * as TaskTypeSaga from './TaskTypeSaga';
 import * as TaskSaga from './TaskSaga';
 import * as PrioritySaga from './PrioritySaga';
 import * as StatusSaga from './StatusSaga';
-import { getAllTaskTypesSaga } from './TaskTypeSaga';
 export function* rootSaga() {
   yield all([
     // from UserSaga
@@ -27,6 +26,9 @@ export function* rootSaga() {
     TaskTypeSaga.getAllTaskTypesSaga(),
     PrioritySaga.getAllPrioritiesSaga(),
     StatusSaga.getAllStatusSaga(),
-    TaskSaga.theoDoiCreateTaskSaga(),
+    TaskSaga.theodoiCreateTaskSaga(),
+    TaskSaga.theodoiGetTaskDetailSaga(),
+    TaskSaga.theodoiUpdateTaskStatusSaga(),
+    TaskSaga.theodoiHandleChangePostApi(),
   ]);
 }

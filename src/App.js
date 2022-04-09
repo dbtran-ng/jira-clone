@@ -46,6 +46,7 @@ function App() {
           path="/projectdetails/:projectId"
           Component={IndexCyberbugs}
         />
+
         <CyberbugsTemplate path="/" Component={ProjectManagement} />
         <CyberbugsTemplate path="*" Component={PageNotFound} />
         <CyberbugsTemplate path="/home" Component={ProjectManagement} />

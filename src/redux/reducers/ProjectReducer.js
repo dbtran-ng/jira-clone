@@ -1,4 +1,7 @@
-import { GET_PROJECT_SAGA, GET_ALL_PROJECT } from '../constants/CyberbugsConst';
+import {
+  GET_PROJECT_SAGA,
+  GET_ALL_PROJECTS,
+} from '../constants/CyberbugsConst';
 
 const stateDefault = {
   projectList: [],
@@ -10,7 +13,7 @@ export const ProjectReducer = (state = stateDefault, action) => {
     case GET_PROJECT_SAGA:
       state.projectList = action.projectList;
       return { ...state };
-    case GET_ALL_PROJECT: {
+    case GET_ALL_PROJECTS: {
       return { ...state, arrProject: action.projectDetails };
     }
     default:

@@ -9,6 +9,7 @@ import {
   GET_USER_API,
   GET_USER_BY_PROJECT_ID_SAGA,
   SET_SUBMIT_CREATE_TASK,
+  GET_USER_BY_PROJECT_ID,
 } from '../../../redux/constants/CyberbugsConst';
 import { GET_ALL_TASK_TYPES_SAGA } from '../../../redux/constants/TaskTypeConst';
 import { GET_ALL_PRIORITIES_SAGA } from '../../../redux/constants/PriorityConst';
@@ -38,10 +39,10 @@ function FormCreateTask(props) {
   const { arrProject } = useSelector((state) => state.ProjectReducer);
   const { arrTaskTypes } = useSelector((state) => state.TaskTypeReducer);
   const { arrPriorities } = useSelector((state) => state.PriorityReducer);
-  const { userSearch } = useSelector((state) => state.UserLoginReducer);
+  const { arrUser } = useSelector((state) => state.UserLoginReducer);
   const { arrStatus } = useSelector((state) => state.StatusReducer);
 
-  const userOption = userSearch.map((item, index) => {
+  const userOption = arrUser.map((item, index) => {
     return { value: item.userId, label: item.name };
   });
   const dispatch = useDispatch();
@@ -63,7 +64,7 @@ function FormCreateTask(props) {
       keyword: '',
     });
   }, []);
-
+  const children = [];
   return (
     <form className="container" onSubmit={handleSubmit}>
       <div className="form-group">
@@ -164,7 +165,7 @@ function FormCreateTask(props) {
               optionFilterProp="label"
               onSearch={() => {
                 dispatch({
-                  type: GET_USER_API,
+                  type: GET_USER_BY_PROJECT_ID,
                   keyword: '',
                 });
               }}

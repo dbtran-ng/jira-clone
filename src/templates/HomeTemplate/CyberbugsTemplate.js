@@ -4,7 +4,7 @@ import ContentMain from '../../components/Cyberbugs/Main/ContentMain.js';
 import HeaderMain from '../../components/Cyberbugs/Main/HeaderMain';
 import InfoMain from '../../components/Cyberbugs/Main/InfoMain';
 import MenuCyberbugs from '../../components/Cyberbugs/MenuCyberbugs';
-import ModalCyberBugs from '../../components/Cyberbugs/ModalCyberbugs';
+import ModalCyberbugs from '../../components/Cyberbugs/ModalCyberbugs';
 import SidebarCyberbugs from '../../components/Cyberbugs/SidebarCyberbugs';
 
 import '../../index.css';
@@ -21,6 +21,7 @@ export const CyberbugsTemplate = (props) => {
               <SidebarCyberbugs />
               <MenuCyberbugs />
               <Component {...propsRoute} />
+              <ModalCyberbugs />
             </div>
           </>
         );
