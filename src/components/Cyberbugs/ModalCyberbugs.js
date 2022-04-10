@@ -39,8 +39,6 @@ export default function ModalCyberbugs(props) {
     dispatch({ type: GET_ALL_TASK_TYPES_SAGA });
   }, []);
 
-  console.log('taskDetailModal', taskDetailModal);
-
   const renderDescription = () => {
     const jsxDescription = ReactHtmlParser(taskDetailModal.description);
     return (

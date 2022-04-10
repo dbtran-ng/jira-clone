@@ -8,7 +8,7 @@ export default function IndexCyberbugs(props) {
   const { projectDetails } = useSelector(
     (state) => state.ProjectFunctionReducer
   );
-  console.log(projectDetails);
+
   const dispatch = useDispatch();
   useEffect(() => {
     const { projectId } = props.match.params;
